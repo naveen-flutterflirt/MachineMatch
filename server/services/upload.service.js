@@ -7,7 +7,7 @@ import specificationRepository from '../repositories/specification.repository.js
 import attributeMasterRepository from '../repositories/attributeMaster.repository.js';
 import categoryAttributeTemplateRepository from '../repositories/categoryAttributeTemplate.repository.js';
 import Vendor from '../models/Vendor.js';
-import { getFilePublicUrl } from '../utils/s3Upload.js';
+import { getFilePublicUrl, uploadFileToS3 } from '../utils/s3Upload.js';
 import { extractSpecsFromPdf } from './ai/pdfSpecExtractor.js';
 import { convertToStandardUnit } from '../utils/unitConverter.js';
 import { AppError } from '../utils/AppError.js';
@@ -23,7 +23,13 @@ export class UploadService extends BaseService {
       throw new AppError('No file uploaded. Please attach a file.', 400);
     }
 
-    const fileUrl = getFilePublicUrl(file);
+    let fileUrl = getFilePublicUrl(file);
+    if (process.env.STORAGE_PROVIDER === 's3' || process.env.AWS_S3_BUCKET_NAME || process.env.AWS_ACCESS_KEY_ID) {
+      const s3Url = await uploadFileToS3(file);
+      if (s3Url) {
+        fileUrl = s3Url;
+      }
+    }
 
     const newUpload = await this.uploadRepo.create({
       uploadedByUserId: userId || null,

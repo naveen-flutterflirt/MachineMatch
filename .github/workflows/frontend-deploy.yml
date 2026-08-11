@@ -50,5 +50,10 @@ jobs:
 
       - name: Invalidate CloudFront cache
         run: |
-          echo "Creating CloudFront invalidation..."
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+          DIST_ID="${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}"
+          if [ -n "$DIST_ID" ]; then
+            echo "Creating CloudFront invalidation for distribution $DIST_ID..."
+            aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
+          else
+            echo "ℹ️ CLOUDFRONT_DISTRIBUTION_ID secret not configured yet. Skipping CloudFront invalidation."
+          fi

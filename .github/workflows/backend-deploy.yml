@@ -48,19 +48,35 @@ jobs:
       - name: Download active Task Definition from ECS
         id: download-task-def
         run: |
-          echo "Fetching latest task definition for family ${{ secrets.ECS_TASK_DEFINITION }}..."
-          aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_DEFINITION }} --query taskDefinition > task-def.json
+          TASK_DEF_NAME="${{ secrets.ECS_TASK_DEFINITION }}"
+          if [ -z "$TASK_DEF_NAME" ]; then
+            echo "ℹ️ ECS_TASK_DEFINITION secret not configured yet. ECR image push complete."
+            exit 0
+          fi
+
+          echo "Fetching latest task definition for family $TASK_DEF_NAME..."
+          aws ecs describe-task-definition --task-definition "$TASK_DEF_NAME" --query taskDefinition > task-def.json
           jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' task-def.json > clean-task-def.json
+
+          # Auto-extract container name from active task definition if ECS_CONTAINER_NAME is not set
+          CONTAINER_NAME="${{ secrets.ECS_CONTAINER_NAME }}"
+          if [ -z "$CONTAINER_NAME" ]; then
+            CONTAINER_NAME=$(jq -r '.containerDefinitions[0].name' clean-task-def.json)
+          fi
+          echo "Detected ECS Container Name: $CONTAINER_NAME"
+          echo "container_name=$CONTAINER_NAME" >> $GITHUB_OUTPUT
 
       - name: Render Amazon ECS Task Definition
         id: render-task-def
+        if: ${{ steps.download-task-def.outputs.container_name != '' }}
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: clean-task-def.json
-          container-name: ${{ secrets.ECS_CONTAINER_NAME || secrets.ECR_REPOSITORY }}
+          container-name: ${{ steps.download-task-def.outputs.container_name }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS Task Definition & Wait for Stability
+        if: ${{ steps.download-task-def.outputs.container_name != '' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}

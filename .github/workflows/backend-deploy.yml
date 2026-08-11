@@ -57,7 +57,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: clean-task-def.json
-          container-name: ${{ secrets.ECS_CONTAINER_NAME }}
+          container-name: ${{ secrets.ECS_CONTAINER_NAME || secrets.ECR_REPOSITORY }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS Task Definition & Wait for Stability

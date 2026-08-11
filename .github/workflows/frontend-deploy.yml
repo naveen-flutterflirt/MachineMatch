@@ -46,7 +46,7 @@ jobs:
       - name: Sync dist/ to Amazon S3
         run: |
           echo "Syncing frontend build output to S3 bucket..."
-          aws s3 sync client/dist s3://${{ secrets.FRONTEND_S3_BUCKET }} --delete --no-progress
+          aws s3 sync client/dist s3://${{ secrets.FRONTEND_S3_BUCKET || secrets.AWS_S3_BUCKET_NAME }} --delete --no-progress
 
       - name: Invalidate CloudFront cache
         run: |

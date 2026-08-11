@@ -54,7 +54,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Health Check Routes (Root & API v1)
+// Health Check Routes for AWS ALB Target Group (TG) & ECS Container Monitoring
 const healthCheckHandler = (req, res) => {
   res.status(200).json({
     status: 'healthy',
@@ -64,7 +64,9 @@ const healthCheckHandler = (req, res) => {
   });
 };
 
+app.get('/', healthCheckHandler);
 app.get('/health', healthCheckHandler);
+app.head('/health', (req, res) => res.status(200).end());
 app.get('/api/v1/health', healthCheckHandler);
 
 // API Routes

@@ -76,7 +76,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS Task Definition & Wait for Stability
-        if: ${{ steps.download-task-def.outputs.container_name != '' }}
+        if: ${{ steps.download-task-def.outputs.container_name != '' && secrets.ECS_SERVICE != '' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}

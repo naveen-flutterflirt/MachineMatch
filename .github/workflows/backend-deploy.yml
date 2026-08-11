@@ -65,6 +65,7 @@ jobs:
           fi
           echo "Detected ECS Container Name: $CONTAINER_NAME"
           echo "container_name=$CONTAINER_NAME" >> $GITHUB_OUTPUT
+          echo "ecs_service=${{ secrets.ECS_SERVICE }}" >> $GITHUB_OUTPUT
 
       - name: Render Amazon ECS Task Definition
         id: render-task-def
@@ -76,7 +77,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS Task Definition & Wait for Stability
-        if: ${{ steps.download-task-def.outputs.container_name != '' && secrets.ECS_SERVICE != '' }}
+        if: ${{ steps.download-task-def.outputs.container_name != '' && steps.download-task-def.outputs.ecs_service != '' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}

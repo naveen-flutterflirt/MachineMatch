@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  min-height: 100vh;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900;
+  }
+}
+

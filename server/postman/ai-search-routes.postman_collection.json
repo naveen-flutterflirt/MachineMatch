@@ -1,0 +1,79 @@
+{
+  "info": {
+    "_postman_id": "machinematch-ai-search-v1",
+    "name": "MachineMatch Pluggable AI Engine API",
+    "description": "Postman Collection for testing Natural Language AI Queries, Vector Similarity Search (Machines Like This), and Embedding Generation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Pluggable AI Search",
+      "item": [
+        {
+          "name": "1. Natural Language AI Query Translation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"queryText\": \"20-ton excavator under 40 lakh with good fuel efficiency\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "search"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Vector Similarity Search (Machines Like This)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ai/similar/<MACHINE_UUID>?limit=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "similar", "<MACHINE_UUID>"],
+              "query": [
+                { "key": "limit", "value": "5" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Generate Vector Embedding (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"machineId\": \"<MACHINE_UUID>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/generate-embedding",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "generate-embedding"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

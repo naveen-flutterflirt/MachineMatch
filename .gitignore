@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build & Export Outputs
+dist
+.next
+out
+build
+*.tsbuildinfo
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Server uploads & temporary files
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Operating system & IDE files
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

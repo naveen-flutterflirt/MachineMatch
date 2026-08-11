@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "machinematch-category-attribute-v1",
+    "name": "MachineMatch Category & Attribute Master API",
+    "description": "Postman Collection for testing Category, AttributeMaster, and CategoryAttributeTemplate CRUD APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "1. Create Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Excavator\",\n  \"description\": \"Heavy construction excavators\",\n  \"iconUrl\": \"https://example.com/icons/excavator.png\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get Category Tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/tree",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "tree"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Search Categories (Paginated & Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/search?q=excavator&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "search"],
+              "query": [
+                { "key": "q", "value": "excavator" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get Category By Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/slug/excavator",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "slug", "excavator"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Attribute Masters",
+      "item": [
+        {
+          "name": "1. Create Attribute Master (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operating Weight\",\n  \"dataType\": \"number\",\n  \"standardUnit\": \"kg\",\n  \"higherIsBetter\": true,\n  \"defaultWeight\": 1.0,\n  \"description\": \"Total machine operating weight in kg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/attributes",
+              "host": ["{{baseUrl}}"],
+              "path": ["attributes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Search Attributes (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attributes/search?q=weight&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["attributes", "search"],
+              "query": [
+                { "key": "q", "value": "weight" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Category Templates",
+      "item": [
+        {
+          "name": "1. Assign Attribute to Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"<CATEGORY_UUID>\",\n  \"attributeId\": \"<ATTRIBUTE_UUID>\",\n  \"isRequired\": true,\n  \"displayOrder\": 1,\n  \"unitOptions\": [\"kg\", \"ton\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/category-templates",
+              "host": ["{{baseUrl}}"],
+              "path": ["category-templates"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get Category Template Specs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/category-templates/category/<CATEGORY_UUID>",
+              "host": ["{{baseUrl}}"],
+              "path": ["category-templates", "category", "<CATEGORY_UUID>"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

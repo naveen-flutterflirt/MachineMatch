@@ -1,0 +1,20 @@
+# Dependencies and build artifacts
+node_modules
+npm-debug.log
+.DS_Store
+
+# Environment files
+.env
+.env.*
+
+# Git files
+.git
+.gitignore
+
+# Uploads directory
+uploads/*
+!uploads/.gitkeep
+
+# Documentation and Postman tests
+postman
+*.md

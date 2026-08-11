@@ -1,0 +1,98 @@
+{
+  "info": {
+    "_postman_id": "machinematch-vendor-v1",
+    "name": "MachineMatch Vendor API",
+    "description": "Postman Collection for testing Vendor CRUD APIs, verification status, and paginated searches.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Vendors",
+      "item": [
+        {
+          "name": "1. Create Vendor (Admin/Vendor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Caterpillar India\",\n  \"companyRegistrationNo\": \"CIN-12345678\",\n  \"taxId\": \"GSTIN99887766\",\n  \"address\": \"Industrial Area Phase II\",\n  \"city\": \"Chennai\",\n  \"state\": \"Tamil Nadu\",\n  \"zipCode\": \"600001\",\n  \"country\": \"India\",\n  \"website\": \"https://www.caterpillar.com\",\n  \"contactPersonName\": \"Rajesh Kumar\",\n  \"contactPhone\": \"+91-9876543210\",\n  \"contactEmail\": \"rajesh@caterpillar.com\",\n  \"logoUrl\": \"https://example.com/logos/cat.png\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vendors",
+              "host": ["{{baseUrl}}"],
+              "path": ["vendors"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get Verified Vendors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendors/verified",
+              "host": ["{{baseUrl}}"],
+              "path": ["vendors", "verified"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Search Vendors (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendors/search?q=caterpillar&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["vendors", "search"],
+              "query": [
+                { "key": "q", "value": "caterpillar" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Verify Vendor (Admin Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isVerified\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vendors/<VENDOR_UUID>/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["vendors", "<VENDOR_UUID>", "verify"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

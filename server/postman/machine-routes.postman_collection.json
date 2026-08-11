@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "machinematch-machine-v1",
+    "name": "MachineMatch Machine Catalog API",
+    "description": "Postman Collection for testing Machine Catalog, Media, Specifications, Prices, and Status Approval APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Machines Catalog",
+      "item": [
+        {
+          "name": "1. Create Machine Draft (Admin/Vendor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"<CATEGORY_UUID>\",\n  \"vendorId\": \"<VENDOR_UUID>\",\n  \"modelName\": \"320D3\",\n  \"variant\": \"HD\",\n  \"manufacturingYear\": 2024,\n  \"isFeatured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/machines",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get Machine Full Details (Deep Includes)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/machines/<MACHINE_UUID>/details",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "<MACHINE_UUID>", "details"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Search Machines Catalog (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/machines/search?q=320D3&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "search"],
+              "query": [
+                { "key": "q", "value": "320D3" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Update Machine Approval Status (Admin Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"published\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/machines/<MACHINE_UUID>/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "<MACHINE_UUID>", "status"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Media Assets",
+      "item": [
+        {
+          "name": "1. Add Media Asset (Image / PDF Brochure)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"image\",\n  \"url\": \"https://example.com/images/cat-320d3.jpg\",\n  \"thumbnailUrl\": \"https://example.com/images/cat-320d3-thumb.jpg\",\n  \"title\": \"Caterpillar 320D3 Front View\",\n  \"isPrimary\": true,\n  \"displayOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/machines/<MACHINE_UUID>/media",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "<MACHINE_UUID>", "media"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Specifications",
+      "item": [
+        {
+          "name": "1. Set Machine Specification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeId\": \"<ATTRIBUTE_UUID>\",\n  \"rawValue\": \"148 HP\",\n  \"rawUnit\": \"HP\",\n  \"normalizedValue\": 110.36,\n  \"normalizedUnit\": \"kW\",\n  \"source\": \"manual\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/machines/<MACHINE_UUID>/specifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "<MACHINE_UUID>", "specifications"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prices",
+      "item": [
+        {
+          "name": "1. Add Machine Price Tier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priceType\": \"ex_factory\",\n  \"amount\": 3850000.00,\n  \"currency\": \"INR\",\n  \"region\": \"India\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/machines/<MACHINE_UUID>/prices",
+              "host": ["{{baseUrl}}"],
+              "path": ["machines", "<MACHINE_UUID>", "prices"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

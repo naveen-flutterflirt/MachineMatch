@@ -1,0 +1,85 @@
+{
+  "info": {
+    "_postman_id": "machinematch-comparison-v1",
+    "name": "MachineMatch Comparison & Fit Score Engine API",
+    "description": "Postman Collection for testing Side-by-Side Comparison Tables, MCDA Weighted Fit Match Scoring, and Requirement Profiles.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Comparison Engine",
+      "item": [
+        {
+          "name": "1. Create Comparison Session (2-4 Machines)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"<CATEGORY_UUID>\",\n  \"title\": \"20-Ton Excavator Comparison\",\n  \"machineIds\": [\n    \"<MACHINE_1_UUID>\",\n    \"<MACHINE_2_UUID>\"\n  ],\n  \"requirementsProfile\": {\n    \"operating_weight\": { \"weight\": 0.4, \"target\": 21000 },\n    \"engine_power\": { \"weight\": 0.6, \"target\": 115 }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comparisons",
+              "host": ["{{baseUrl}}"],
+              "path": ["comparisons"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get Side-by-Side Comparison Grid Matrix",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comparisons/<COMPARISON_UUID>/table",
+              "host": ["{{baseUrl}}"],
+              "path": ["comparisons", "<COMPARISON_UUID>", "table"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Calculate Fit Match Scores (0-100%)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comparisons/<COMPARISON_UUID>/scores",
+              "host": ["{{baseUrl}}"],
+              "path": ["comparisons", "<COMPARISON_UUID>", "scores"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Update Requirements Weights & Target Thresholds",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requirementsProfile\": {\n    \"operating_weight\": { \"weight\": 0.3, \"target\": 20000 },\n    \"engine_power\": { \"weight\": 0.7, \"target": 120 }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comparisons/<COMPARISON_UUID>/requirements",
+              "host": ["{{baseUrl}}"],
+              "path": ["comparisons", "<COMPARISON_UUID>", "requirements"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
